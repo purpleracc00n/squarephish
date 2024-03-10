@@ -15,6 +15,7 @@
 import io
 import logging
 import pyqrcode  # type: ignore
+import base64
 from configparser import ConfigParser
 from email.message import EmailMessage
 from email.mime.image import MIMEImage
@@ -44,7 +45,7 @@ class QRCodeEmail:
         try:
             endpoint = endpoint.strip("/")
             if url is None:
-                url = f"https://{server}:{port}/{endpoint}?email={email}"
+                url = f"https://{server}/{endpoint}?token={b64encode(email)}"
             qrcode = pyqrcode.create(url)
 
             # Get the QR code as raw bytes and store as BytesIO object
