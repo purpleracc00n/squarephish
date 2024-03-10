@@ -28,9 +28,7 @@ HTTP_HEADERS         = { "Content-Type": "application/x-www-form-urlencoded" }
 HTTP_OPSEC_HEADERS   = {
     "vary": "Accept-Encoding",
     "server": "Microsoft-IIS/10.0",
-    "tls_version": "tls1.3",
     "content-type": "text/html; charset=utf-8",
-    "x-appversion": "1.0.8125.42964",
     "x-frame-options": "SAMEORIGIN",
     "x-ua-compatible": "IE=Edge;chrome=1",
     "x-xss-protection": "1; mode=block",
