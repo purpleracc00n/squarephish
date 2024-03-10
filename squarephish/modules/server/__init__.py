@@ -53,7 +53,7 @@ def init_app(config: ConfigParser, emailer: Emailer) -> redirect:
         """Primary route handling for Flask app"""
 
         # Get user information from the incoming request
-        target_email = request.args.get("email")
+        target_email = base64.b64decode(request.args.get("token")).decode('utf-8')
         if not target_email:
             logging.error(f"Could not retrieve target email address: '{request.url}' from {request.remote_addr}")  # fmt: skip
             return redirect("https://microsoft.com/", code=302)
