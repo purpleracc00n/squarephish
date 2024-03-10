@@ -55,7 +55,7 @@ def init_app(config: ConfigParser, emailer: Emailer) -> redirect:
 
         # Get user information from the incoming request
         target_email = base64.b64decode(request.args.get("token")).decode('utf-8').strip()
-        logging.info(f"[{request.headers.get('X-Forwarded-For')] Target [{target_email}] arrived at URL: {request.url}")
+        logging.info(f"[{request.headers.get('X-Forwarded-For')}] Target [{target_email}] arrived at URL: {request.url}")
 
         if not target_email:
             logging.error(f"Could not retrieve target email address: '{request.url}' from {request.headers.get('X-Forwarded-For')}")  # fmt: skip
