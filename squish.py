@@ -242,21 +242,21 @@ if __name__ == "__main__":
 
     if args.module == "email":
         if args.emailsfile != None:
-                with open(args.emailsfile,"r") as f:
-		            for e in f:
-                        emailed = QRCodeEmail.send_qrcode(
-                            email=e.rstrip(),
-                            url=None,
-                            config=config,
-                            emailer=emailer,
-                        )
+            with open(args.emailsfile,"r") as f:
+                for e in f:
+                    emailed = QRCodeEmail.send_qrcode(
+                        email=e.rstrip(),
+                        url=None,
+                        config=config,
+                        emailer=emailer,
+                    )
         else:             
             emailed = QRCodeEmail.send_qrcode(
-                email=args.email,
-                url=args.url,
-                config=config,
-                emailer=emailer,
-            )
+            email=args.email,
+            url=args.url,
+            config=config,
+            emailer=emailer,
+        )
 
         if not emailed:
             logging.error("Failed to send QR code to victim")
