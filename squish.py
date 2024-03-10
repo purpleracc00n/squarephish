@@ -250,6 +250,10 @@ if __name__ == "__main__":
                         config=config,
                         emailer=emailer,
                     )
+                    if not emailed:
+                        logging.error("Failed to send QR code to victim")
+                    else:
+                        logging.info(f"Successfully sent email to: {e.rstrip()}")
         else:             
             emailed = QRCodeEmail.send_qrcode(
             email=args.email,
@@ -257,12 +261,10 @@ if __name__ == "__main__":
             config=config,
             emailer=emailer,
         )
-
-        if not emailed:
-            logging.error("Failed to send QR code to victim")
-
-        else:
-            logging.info(f"Successfully sent email to: {args.email}")
+            if not emailed:
+                logging.error("Failed to send QR code to victim")
+            else:
+                logging.info(f"Successfully sent email to: {args.email}")
 
     elif args.module == "server":
         logging.info(f"Starting: {app_info}")
