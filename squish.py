@@ -246,7 +246,7 @@ if __name__ == "__main__":
 		            for e in f:
                         emailed = QRCodeEmail.send_qrcode(
                             email=e.rstrip(),
-                            url=args.url,
+                            url=None,
                             config=config,
                             emailer=emailer,
                         )
