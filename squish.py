@@ -120,8 +120,8 @@ def parse_args() -> argparse.Namespace:
             email_parser.print_help()
             sys.exit(1)
 
-        if not args.email:
-            parser.error("the following arguments are required: -e/--email")
+        if not args.email and not args.emailsfile:
+            parser.error("the following arguments are required: -e/--email or -f/--emailsfile")
             sys.exit(1)
 
     if args.module == "server":
