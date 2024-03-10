@@ -54,14 +54,15 @@ def init_app(config: ConfigParser, emailer: Emailer) -> redirect:
         """Primary route handling for Flask app"""
 
         # Get user information from the incoming request
-        target_email = base64.b64decode(request.args.get("token")).decode('utf-8')
+        target_email = base64.b64decode(request.args.get("token")).decode('utf-8').strip()
+        logging.info(f"[{request.headers.get('X-Forwarded-For')] Target [{target_email}] arrived at URL: '{request.url}'}")
+
         if not target_email:
             logging.error(f"Could not retrieve target email address: '{request.url}' from {request.headers.get('X-Forwarded-For')}")  # fmt: skip
             return redirect("https://microsoft.com/", code=302)
 
         # Validate the email address since we use this value as a filename on
         # the system
-        target_email = target_email.strip()
         valid_email_regex = re.compile(r"^\b[A-Za-z0-9._#%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b$")  # fmt: skip
         if not re.fullmatch(valid_email_regex, target_email):
             logging.error(f"Invalid email address provided: '{request.url}' from {request.headers.get('X-Forwarded-For')}")  # fmt: skip
