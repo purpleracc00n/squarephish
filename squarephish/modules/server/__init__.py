@@ -16,6 +16,7 @@ import re
 import urllib
 import logging
 import requests
+import base64
 from flask import request  # type: ignore
 from flask import redirect  # type: ignore
 from configparser import ConfigParser
