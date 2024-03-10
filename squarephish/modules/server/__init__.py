@@ -46,7 +46,7 @@ def init_app(config: ConfigParser, emailer: Emailer) -> redirect:
     @app.errorhandler(404)
     def handle_404(e):
         """Handle 404 errors here"""
-        logging.error(f"Invalid URL request '{request.url}' from {request.remote_addr}")
+        logging.error(f"Invalid URL request '{request.url}' from {request.headers.get('X-Forwarded-For')}")
         return redirect("https://microsoft.com/", code=302)
 
     @app.route(route, methods=["GET"])
@@ -56,7 +56,7 @@ def init_app(config: ConfigParser, emailer: Emailer) -> redirect:
         # Get user information from the incoming request
         target_email = base64.b64decode(request.args.get("token")).decode('utf-8')
         if not target_email:
-            logging.error(f"Could not retrieve target email address: '{request.url}' from {request.remote_addr}")  # fmt: skip
+            logging.error(f"Could not retrieve target email address: '{request.url}' from {request.headers.get('X-Forwarded-For')}")  # fmt: skip
             return redirect("https://microsoft.com/", code=302)
 
         # Validate the email address since we use this value as a filename on
@@ -64,7 +64,7 @@ def init_app(config: ConfigParser, emailer: Emailer) -> redirect:
         target_email = target_email.strip()
         valid_email_regex = re.compile(r"^\b[A-Za-z0-9._#%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b$")  # fmt: skip
         if not re.fullmatch(valid_email_regex, target_email):
-            logging.error(f"Invalid email address provided: '{request.url}' from {request.remote_addr}")  # fmt: skip
+            logging.error(f"Invalid email address provided: '{request.url}' from {request.headers.get('X-Forwarded-For')}")  # fmt: skip
             return redirect("https://microsoft.com/", code=302)
 
         # Build the permissions scope
