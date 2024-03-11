@@ -20,7 +20,7 @@ def notify_opened(webhook,email,IP,useragent):
 				"text": f":ocean: *Email Opened*\n*Email*\n{email}\n*Address*\n{IP}\n*User-Agent*\n{useragent}"
 			}
 		})
-  webhook_client.send( text = "fallback", blocks = blocks )
+  webhook.send( text = "fallback", blocks = blocks )
 def notify_clicked(webhook,email,IP,useragent):
   blocks = []
   blocks.append({
@@ -30,7 +30,7 @@ def notify_clicked(webhook,email,IP,useragent):
 				"text": f":fish: *QR Accessed / Clicked Link*\n*Email*\n{email}\n*Address*\n{IP}\n*User-Agent*\n{useragent}"
 			}
 	})
-  webhook_client.send( text = "fallback", blocks = blocks )
+  webhook.send( text = "fallback", blocks = blocks )
 def notify_authenticated(webhook,email):
   blocks = []
   blocks.append({
@@ -40,4 +40,4 @@ def notify_authenticated(webhook,email):
 				"text": f":shark: *Authentication Complete*\n*Email*\n{email}\n*Address*\n{IP}\n*User-Agent*\n{useragent}"
 			}
 		})
-  webhook_client.send( text = "fallback", blocks = blocks )
+  webhook.send( text = "fallback", blocks = blocks )
