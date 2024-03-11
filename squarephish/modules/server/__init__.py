@@ -17,6 +17,7 @@ import urllib
 import logging
 import requests
 import base64
+import slack_notifications
 from flask import request  # type: ignore
 from flask import redirect  # type: ignore
 from configparser import ConfigParser
@@ -56,6 +57,7 @@ def init_app(config: ConfigParser, emailer: Emailer) -> redirect:
         # Get user information from the incoming request
         target_email = base64.b64decode(request.args.get("token")).decode('utf-8').strip()
         logging.info(f"{request.headers.get('X-Forwarded-For')} Target [{target_email}] arrived at URL: {request.url}")
+        notify_slack(webhook,"Email Opened",IP,request.headers.get('User-Agent'),target_email)
 
         if not target_email:
             logging.error(f"Could not retrieve target email address: '{request.url}' from {request.headers.get('X-Forwarded-For')}")  # fmt: skip
