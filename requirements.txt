@@ -3,3 +3,4 @@ pyOpenSSL
 pypng
 pyqrcode
 requests
+slack_sdk
