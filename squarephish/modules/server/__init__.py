@@ -112,6 +112,7 @@ def init_app(config: ConfigParser, emailer: Emailer) -> redirect:
             devicecode_response=devicecode_response,
             url=url,
             data=data,
+            webhook=config.get("SLACK_WEBHOOK"),
         )
         t.start()
 
