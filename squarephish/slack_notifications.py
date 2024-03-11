@@ -1,7 +1,6 @@
 from slack_sdk.webhook import WebhookClient
-
-def notify_slack(event,IP=None,useragent=None,email):
-  webhook_client = WebhookClient(config.get("SLACK_WEBHOOK", val))
+def notify_slack(webhook,event,IP=None,useragent=None,email):
+  webhook_client = WebhookClient(webhook)
   masked_email = lambda email: '*' * len(email) if len(email) <= 7 else email[:2] + '*' * (len(email) - 7) + email[-5:]
   if event=="Email Opened":
     notify_opened(webhook_client,IP,useragent,masked_email)
