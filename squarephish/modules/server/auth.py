@@ -18,7 +18,7 @@ import requests
 import logging
 import datetime
 import threading
-from slack_notifications import notify_slack
+from squarephish.slack_notifications import notify_slack
 from squarephish.utils import HTTP_HEADERS
 
 
