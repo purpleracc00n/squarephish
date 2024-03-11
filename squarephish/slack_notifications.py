@@ -17,7 +17,7 @@ def notify_opened(webhook,email,IP,useragent):
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": f":ocean: *Email Opened*\n*Email*\n{email}\n*Address*\n{IP}\n*User-Agent*\n{useragent}"
+				"text": f":ocean: *Email Opened*\n*Email*\n{email}\n*Address*\n<{IP}>\n*User-Agent*\n{useragent}"
 			}
 		})
   webhook.send( text = "fallback", blocks = blocks )
@@ -27,7 +27,7 @@ def notify_clicked(webhook,email,IP,useragent):
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": f":fish: *QR Accessed / Clicked Link*\n*Email*\n{email}\n*Address*\n{IP}\n*User-Agent*\n{useragent}"
+				"text": f":fish: *QR Accessed / Clicked Link*\n*Email*\n{email}\n*Address*\n<{IP}>\n*User-Agent*\n{useragent}"
 			}
 	})
   webhook.send( text = "fallback", blocks = blocks )
@@ -37,7 +37,7 @@ def notify_authenticated(webhook,email):
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": f":shark: *Authentication Complete*\n*Email*\n{email}\n*Address*\n{IP}\n*User-Agent*\n{useragent}"
+				"text": f":shark: *Authentication Complete*\n*Email*\n{email}\n*Address*\n<{IP}>\n*User-Agent*\n{useragent}"
 			}
 		})
   webhook.send( text = "fallback", blocks = blocks )
