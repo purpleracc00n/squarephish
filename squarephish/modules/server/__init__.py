@@ -17,7 +17,7 @@ import urllib
 import logging
 import requests
 import base64
-from slack_notifications import notify_slack
+from squarephish.slack_notifications import notify_slack
 from flask import request  # type: ignore
 from flask import redirect  # type: ignore
 from configparser import ConfigParser
