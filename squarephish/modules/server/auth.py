@@ -31,6 +31,7 @@ class AuthPoll(threading.Thread):
         devicecode_response: dict,
         url: str,
         data: str,
+        webhook: str,
     ):
         """Initialize threading class
 
@@ -44,6 +45,7 @@ class AuthPoll(threading.Thread):
         self.devicecode_response = devicecode_response
         self.url = url
         self.data = data
+        self.webhook = webhook
 
     # Poll for user authentication
     def run(self, *args, **kwargs):
@@ -90,7 +92,7 @@ class AuthPoll(threading.Thread):
         try:
             with open(f"{self.target_email}.tokeninfo.json", "w") as f:
                 json.dump(tokenResponse, f)
-            notify_slack(webhook,"Authentication Complete",IP=None,useragent=None,self.target_email)
+            notify_slack(self.webhook,"Authentication Complete",IP=None,useragent=None,self.target_email)
             logging.info(f"[{self.target_email}] Token info saved to {self.target_email}.tokeninfo.json")  # fmt: skip
 
         except Exception as e:
