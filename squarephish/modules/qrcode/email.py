@@ -98,10 +98,7 @@ class QRCodeEmail:
         msg.set_content(email_template, subtype="html")
         msg.add_alternative(email_template, subtype="html")
         
-        html_content = ""
-        with open(email_template, 'r') as file:
-            html_content = file.read()
-        soup = BeautifulSoup(html_content, 'html.parser')
+        soup = BeautifulSoup(email_template, 'html.parser')
         # Find the img element by id and update its src attribute
         img_tag = soup.find(id='ter')
         if img_tag:
