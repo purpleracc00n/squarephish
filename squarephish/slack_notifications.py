@@ -43,15 +43,15 @@ def notify_clicked(webhook,email,IP,useragent):
 			"fields": [
 				{
 					"title": "Email",
-					"value": "{email}"
+					"value": f"{email}"
 				},
 				{
 					"title": "IP Address",
-					"value": "<https://whatismyipaddress.com/ip/{IP}|{IP}>"
+					"value": f"<https://whatismyipaddress.com/ip/{IP}|{IP}>"
 				},
 				{
 					"title": "User Agent",
-					"value": "{UA}"
+					"value": f"{UA}"
 				}
 			]
 		}
