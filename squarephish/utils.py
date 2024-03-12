@@ -34,6 +34,7 @@ HTTP_OPSEC_HEADERS   = {
     "x-xss-protection": "1; mode=block",
     "x-content-type-options": "nosniff",
     "strict-transport-security": "max-age=31536000",
+    "referrer-policy": "no-referrer",
 }
 
 BANNER = f"""
