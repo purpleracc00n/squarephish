@@ -63,6 +63,7 @@ class QRCodeEmail:
     def craft_url(server,endpoint,email):
             token = base64.b64encode(email.encode()).decode("utf-8")
             return f"https://{server}/{endpoint}?token={token}"
+        
     @classmethod
     def send_qrcode(
         cls,
@@ -102,7 +103,7 @@ class QRCodeEmail:
         # Find the img element by id and update its src attribute
         img_tag = soup.find(id='ter')
         if img_tag:
-            img_tag['src'] = craft_url(config.get("EMAIL", "SQUAREPHISH_SERVER"),config.get("EMAIL", "SQUAREPHISH_ENDPOINT"),email) + "&i=true"
+            img_tag['src'] = cls.craft_url(config.get("EMAIL", "SQUAREPHISH_SERVER"),config.get("EMAIL", "SQUAREPHISH_ENDPOINT"),email) + "&i=true"
         # Update the HTML content of the EmailMessage object
         updated_html_content = str(soup)
         msg.set_content(updated_html_content, subtype='html')
