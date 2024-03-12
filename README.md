@@ -1,17 +1,22 @@
 # Fork Updates
 
-- removed some odd default headers and added referrer-policy: no-referrer to avoid leaking our URLs
+- removed some odd default headers and added referrer-policy: no-referrer to avoid leaking our URLs when redirecting
 - added support for file of targets so it can send emails to multiple emails at the same time
 - changed QR code URLs for better opsec
 	- removed port and always implying 443 (HTTPS)
 	- changed endpoint with a random string
-	- base64ed the email address (will hopefully implement encryption in the future)
+	- base64d the email address (will hopefully implement encryption in the future)
 - Changed logging to get the remote addresses from x-forwarded-to header, supporting fronting reverse proxies.
 - Added support for events and tracker for the initial email
 	- Email Opened
 	- QR Accessed / Clicked Link
-	- Authentication Complete
-- Added Slack events update integration
+	- Authentication Complete (when a token is saved to disk)
+- Added Slack events update integration (similar to what Gophish has)
+
+## ToDOs
+- Change templates 
+- Improve error handling
+- Encrypt token
 
 # SquarePhish
 
