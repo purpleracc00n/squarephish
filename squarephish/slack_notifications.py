@@ -11,25 +11,55 @@ def notify_slack(webhook,event,email,IP=None,useragent=None):
     logging.error("Unknown status to notify: " + event)
 
 def notify_opened(webhook,email,IP,useragent):
-  blocks = []
-  blocks.append({
-			"type": "section",
-			"text": {
-				"type": "mrkdwn",
-				"text": f":ocean: *Email Opened*\n*Email*\n{email}\n*Address*\n<https://whatismyipaddress.com/ip/{IP}|{IP}>\n*User-Agent*\n{useragent}"
-			}
-		})
-  webhook.send( text = "fallback", blocks = blocks )
+  slack_data = {
+	"attachments": [
+		{
+			"color": "#ffff00",
+			"title": ":ocean: *Email Opened*",
+			"fields": [
+				{
+					"title": "Email",
+					"value": f"{email}"
+				},
+				{
+					"title": "IP Address",
+					"value": f"<https://whatismyipaddress.com/ip/{IP}|{IP}>"
+				},
+				{
+					"title": "User Agent",
+					"value": f"{UA}"
+				}
+			]
+		}
+	]
+  }
+  data=json.dumps(slack_data)
+  webhook.send( text = "fallback", data = data )
 def notify_clicked(webhook,email,IP,useragent):
-  blocks = []
-  blocks.append({
-			"type": "section",
-			"text": {
-				"type": "mrkdwn",
-				"text": f":fish: *QR Accessed / Clicked Link*\n*Email*\n{email}\n*Address*\n<https://whatismyipaddress.com/ip/{IP}|{IP}>\n*User-Agent*\n{useragent}"
-			}
-	})
-  webhook.send( text = "fallback", blocks = blocks )
+  slack_data = {
+	"attachments": [
+		{
+			"color": "##ffa500",
+			"title": ":fish: *QR Accessed / Clicked Link*",
+			"fields": [
+				{
+					"title": "Email",
+					"value": "{email}"
+				},
+				{
+					"title": "IP Address",
+					"value": "<https://whatismyipaddress.com/ip/{IP}|{IP}>"
+				},
+				{
+					"title": "User Agent",
+					"value": "{UA}"
+				}
+			]
+		}
+	]
+  }
+  data=json.dumps(slack_data)
+  webhook.send( text = "fallback", data = data )
 def notify_authenticated(webhook,email):
   blocks = []
   blocks.append({
