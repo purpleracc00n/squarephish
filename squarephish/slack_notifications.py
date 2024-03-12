@@ -59,15 +59,21 @@ def notify_clicked(webhook,email,IP,useragent):
   }
   requests.post(webhook, json=slack_data)
 def notify_authenticated(webhook,email):
-  blocks = []
-  blocks.append({
-			"type": "section",
-			"text": {
-				"type": "mrkdwn",
-				"text": f":shark: *Authentication Complete*\n*Email*\n{email}"
-			}
-		})
-  webhook.send( text = "fallback", blocks = blocks )
+  slack_data = {
+	"attachments": [
+		{
+			"color": "#f05b4f",
+			"title": ":shark: Authentication Complete",
+			"fields": [
+				{
+					"title": "Email",
+					"value": f"{email}"
+				}
+			]
+		}
+	]
+  }
+  requests.post(webhook, json=slack_data)
 	
 def mask_email(s):
     if len(s) <= 7:
