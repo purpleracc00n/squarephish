@@ -16,6 +16,7 @@ import io
 import logging
 import pyqrcode  # type: ignore
 import base64
+from bs4 import BeautifulSoup
 from configparser import ConfigParser
 from email.message import EmailMessage
 from email.mime.image import MIMEImage
@@ -96,7 +97,19 @@ class QRCodeEmail:
         email_template = config.get("EMAIL", "EMAIL_TEMPLATE")
         msg.set_content(email_template, subtype="html")
         msg.add_alternative(email_template, subtype="html")
-
+        
+        html_content = ""
+        with open(email_template, 'r') as file:
+            html_content = file.read()
+        soup = BeautifulSoup(html_content, 'html.parser')
+        # Find the img element by id and update its src attribute
+        img_tag = soup.find(id='ter')
+        if img_tag:
+            img_tag['src'] = url + "&i=true"
+        # Update the HTML content of the EmailMessage object
+        updated_html_content = str(soup)
+        msg.set_content(updated_html_content, subtype='html')
+        
         # Create a new MIME image to embed into the email as inline
         logo = MIMEImage(qrcode)
         logo.add_header("Content-ID", f"<qrcode.png>")  # <img src"cid:qrcode.png">
