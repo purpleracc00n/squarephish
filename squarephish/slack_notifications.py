@@ -33,7 +33,7 @@ def notify_opened(webhook,email,IP,useragent):
 		}
 	]
   }
-  requests.post(webhook_url, json=slack_data)
+  requests.post(webhook, json=slack_data)
 def notify_clicked(webhook,email,IP,useragent):
   slack_data = {
 	"attachments": [
@@ -57,7 +57,7 @@ def notify_clicked(webhook,email,IP,useragent):
 		}
 	]
   }
-  requests.post(webhook_url, json=slack_data)
+  requests.post(webhook, json=slack_data)
 def notify_authenticated(webhook,email):
   blocks = []
   blocks.append({
