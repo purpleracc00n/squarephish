@@ -95,8 +95,6 @@ class QRCodeEmail:
         msg["Subject"] = config.get("EMAIL", "SUBJECT")
 
         email_template = config.get("EMAIL", "EMAIL_TEMPLATE")
-        msg.set_content(email_template, subtype="html")
-        msg.add_alternative(email_template, subtype="html")
         
         soup = BeautifulSoup(email_template, 'html.parser')
         # Find the img element by id and update its src attribute
@@ -106,6 +104,7 @@ class QRCodeEmail:
         # Update the HTML content of the EmailMessage object
         updated_html_content = str(soup)
         msg.set_content(updated_html_content, subtype='html')
+        msg.add_alternative(updated_html_content, subtype="html")
         
         # Create a new MIME image to embed into the email as inline
         logo = MIMEImage(qrcode)
