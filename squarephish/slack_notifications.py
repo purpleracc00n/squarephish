@@ -38,7 +38,7 @@ def notify_clicked(webhook,email,IP,useragent):
   slack_data = {
 	"attachments": [
 		{
-			"color": "##ffa500",
+			"color": "#ffa500",
 			"title": ":fish: *QR Accessed / Clicked Link*",
 			"fields": [
 				{
