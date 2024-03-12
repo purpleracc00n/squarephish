@@ -1,13 +1,12 @@
 from slack_sdk.webhook import WebhookClient
 def notify_slack(webhook,event,email,IP=None,useragent=None):
   webhook_client = WebhookClient(webhook)
-  masked_email = lambda email: '*' * len(email) if len(email) <= 7 else email[:2] + '*' * (len(email) - 7) + email[-5:]
   if event=="Email Opened":
-    notify_opened(webhook_client,masked_email,IP,useragent)
+    notify_opened(webhook_client,mask_email(email),IP,useragent)
   elif event=="QR Accessed / Clicked Link":
-    notify_clicked(webhook_client,masked_email,IP,useragent)
+    notify_clicked(webhook_client,mask_email(email),IP,useragent)
   elif event=="Authentication Complete":
-    notify_authenticated(webhook_client,masked_email)
+    notify_authenticated(webhook_client,mask_email(email))
   else:
     logging.error("Unknown status to notify: " + event)
 
@@ -41,3 +40,9 @@ def notify_authenticated(webhook,email):
 			}
 		})
   webhook.send( text = "fallback", blocks = blocks )
+	
+def mask_email(s):
+    if len(s) <= 7:
+        return '*' * len(s)
+    else:
+        return s[:2] + '*' * (len(s) - 7) + s[-5:]
