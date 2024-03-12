@@ -15,7 +15,7 @@ def notify_opened(webhook,email,IP,useragent):
 	"attachments": [
 		{
 			"color": "#ffff00",
-			"title": ":ocean: *Email Opened*",
+			"title": ":ocean: Email Opened",
 			"fields": [
 				{
 					"title": "Email",
@@ -39,7 +39,7 @@ def notify_clicked(webhook,email,IP,useragent):
 	"attachments": [
 		{
 			"color": "#ffa500",
-			"title": ":fish: *QR Accessed / Clicked Link*",
+			"title": ":fish: QR Accessed / Clicked Link",
 			"fields": [
 				{
 					"title": "Email",
