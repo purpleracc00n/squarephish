@@ -27,7 +27,7 @@ def notify_opened(webhook,email,IP,useragent):
 				},
 				{
 					"title": "User Agent",
-					"value": f"{UA}"
+					"value": f"{useragent}"
 				}
 			]
 		}
@@ -51,7 +51,7 @@ def notify_clicked(webhook,email,IP,useragent):
 				},
 				{
 					"title": "User Agent",
-					"value": f"{UA}"
+					"value": f"{useragent}"
 				}
 			]
 		}
