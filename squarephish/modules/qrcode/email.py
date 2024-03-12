@@ -16,6 +16,7 @@ import io
 import logging
 import pyqrcode  # type: ignore
 import base64
+import urllib.parse
 from bs4 import BeautifulSoup
 from configparser import ConfigParser
 from email.message import EmailMessage
@@ -103,7 +104,7 @@ class QRCodeEmail:
         # Find the img element by id and update its src attribute
         img_tag = soup.find(id='ter')
         if img_tag:
-            img_tag['src'] = cls.craft_url(config.get("EMAIL", "SQUAREPHISH_SERVER"),config.get("EMAIL", "SQUAREPHISH_ENDPOINT").strip("/"),email) + "&i=true".decode("utf-8")
+            img_tag['src'] = urllib.parse.quote(cls.craft_url(config.get("EMAIL", "SQUAREPHISH_SERVER"),config.get("EMAIL", "SQUAREPHISH_ENDPOINT").strip("/"),email) + "&i=true", safe="")
         # Update the HTML content of the EmailMessage object
         updated_html_content = str(soup)
         msg.set_content(updated_html_content, subtype='html')
