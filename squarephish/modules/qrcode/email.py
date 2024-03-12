@@ -46,7 +46,7 @@ class QRCodeEmail:
         try:
             endpoint = endpoint.strip("/")
             if url is None:
-                url = craft_url(server,endpoint,email)
+                url = self.craft_url(server,endpoint,email)
             qrcode = pyqrcode.create(url)
 
             # Get the QR code as raw bytes and store as BytesIO object
