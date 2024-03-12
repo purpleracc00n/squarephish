@@ -4,3 +4,4 @@ pypng
 pyqrcode
 requests
 slack_sdk
+beautifulsoup4
