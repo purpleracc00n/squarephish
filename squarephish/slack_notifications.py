@@ -1,13 +1,12 @@
-from slack_sdk.webhook import WebhookClient
 import json
+import requests
 def notify_slack(webhook,event,email,IP=None,useragent=None):
-  webhook_client = WebhookClient(webhook)
   if event=="Email Opened":
-    notify_opened(webhook_client,mask_email(email),IP,useragent)
+    notify_opened(webhook,mask_email(email),IP,useragent)
   elif event=="QR Accessed / Clicked Link":
-    notify_clicked(webhook_client,mask_email(email),IP,useragent)
+    notify_clicked(webhook,mask_email(email),IP,useragent)
   elif event=="Authentication Complete":
-    notify_authenticated(webhook_client,mask_email(email))
+    notify_authenticated(webhook,mask_email(email))
   else:
     logging.error("Unknown status to notify: " + event)
 
@@ -34,8 +33,7 @@ def notify_opened(webhook,email,IP,useragent):
 		}
 	]
   }
-  data=json.dumps(slack_data)
-  webhook.send( text = "fallback", data = data )
+  requests.post(webhook_url, json=slack_data)
 def notify_clicked(webhook,email,IP,useragent):
   slack_data = {
 	"attachments": [
@@ -59,8 +57,7 @@ def notify_clicked(webhook,email,IP,useragent):
 		}
 	]
   }
-  data=json.dumps(slack_data)
-  webhook.send( text = "fallback", data = data )
+  requests.post(webhook_url, json=slack_data)
 def notify_authenticated(webhook,email):
   blocks = []
   blocks.append({
