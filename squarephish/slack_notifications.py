@@ -1,4 +1,5 @@
 from slack_sdk.webhook import WebhookClient
+import json
 def notify_slack(webhook,event,email,IP=None,useragent=None):
   webhook_client = WebhookClient(webhook)
   if event=="Email Opened":
