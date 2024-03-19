@@ -18,6 +18,12 @@
 - Improve error handling
 - Encrypt token
 
+## Other useful Microsoft Applications apart from Authenticator:
+- Microsoft Authentication Broker (29d9ed98-a469-4536-ade2-f981bc1d605e)
+	- Register or join a device to Azure AD if we don’t already have access to a device in the tenant.
+	- Use the refresh token to ask for a PRT.
+	- If the user performed “fresh” MFA when authenticating with the device code flow, we can also register WHFB credentials on their account for persistence.
+
 # SquarePhish
 
 SquarePhish is an advanced phishing tool that uses a technique combining the OAuth Device code authentication flow and QR codes.
