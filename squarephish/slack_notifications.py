@@ -1,7 +1,8 @@
 import json
 import requests
+from user_agents import parse
 
-def GetIPInfoData(ip_address, api_token):
+def getIPInfoData(ip_address, api_token):
   url = f"https://ipinfo.io/{ip_address}?token={api_token}"
 
   try:
@@ -17,18 +18,38 @@ def GetIPInfoData(ip_address, api_token):
   except requests.exceptions.RequestException as e:
     return {"error": str(e)}
 
+def getUserAgentDetails(user_agent):
+  try:
+    ua = parse(user_agent)
+        
+    platform = ua.device.family
+    os = f"{ua.os.family} {ua.os.version_string}"
+    browser = f"{ua.browser.family} {ua.browser.version_string}"
+    mobile = ua.is_mobile
+        
+    return {
+      "Platform": platform,
+      "OS": os,
+      "Browser": browser,
+      "Mobile": mobile
+    }
+
+  except Exception as e:
+    return {"error": str(e)}
+
 def notify_slack(webhook,ipinfo_key,event,email,IP=None,useragent=None):
-  IPInfoData = GetIPInfoData(IP,ipinfo_key)
+  IPInfoData = getIPInfoData(IP,ipinfo_key)
+  UserAgentDetails = getUserAgentDetails(useragent)
   if event=="Email Opened":
-    notify_opened(webhook,mask_email(email),IP,useragent,IPInfoData)
+    notify_opened(webhook,mask_email(email),IP,useragent,IPInfoData,UserAgentDetails)
   elif event=="QR Accessed / Clicked Link":
-    notify_clicked(webhook,mask_email(email),IP,useragent,IPInfoData)
+    notify_clicked(webhook,mask_email(email),IP,useragent,IPInfoData,UserAgentDetails)
   elif event=="Authentication Complete":
     notify_authenticated(webhook,mask_email(email))
   else:
     logging.error("Unknown status to notify: " + event)
 
-def notify_opened(webhook,email,IP,useragent,IPInfoData):
+def notify_opened(webhook,email,IP,useragent,IPInfoData,UserAgentDetails):
   slack_data = {
 	"attachments": [
 		{
@@ -57,14 +78,14 @@ def notify_opened(webhook,email,IP,useragent,IPInfoData):
 				},
 				{
 					"title": "User Agent Details",
-					"value": f"Platform: PLAT\nOS: OS\NBrowser: BROWSER\nMobile: false"
+					"value": f"Platform: {UserAgentDetails['Platform']}\nOS: {UserAgentDetails['OS']}\nBrowser: {UserAgentDetails['Browser']}\nMobile: {UserAgentDetails['Mobile']}"
 				}
 			]
 		}
 	]
   }
   requests.post(webhook, json=slack_data)
-def notify_clicked(webhook,email,IP,useragent,IPInfoData):
+def notify_clicked(webhook,email,IP,useragent,IPInfoData,UserAgentDetails):
   slack_data = {
 	"attachments": [
 		{
@@ -93,7 +114,7 @@ def notify_clicked(webhook,email,IP,useragent,IPInfoData):
 				},
 				{
 					"title": "User Agent Details",
-					"value": f"Platform: PLAT\nOS: OS\NBrowser: BROWSER\nMobile: false"
+					"value": f"Platform: {UserAgentDetails['Platform']}\nOS: {UserAgentDetails['OS']}\nBrowser: {UserAgentDetails['Browser']}\nMobile: {UserAgentDetails['Mobile']}"
 				}
 			]
 		}
