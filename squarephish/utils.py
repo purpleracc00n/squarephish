@@ -75,7 +75,7 @@ class LoggingLevels:
     INFO     = f"{bcolors.OKGREEN}%s{bcolors.ENDC}" % "info"
 
 
-def init_logger(debug: bool, log_file="squarephish_log.txt"):
+def init_logger(debug: bool, log_file):
     """Initialize program logging
 
     :param debug: debug enabled/disabled
