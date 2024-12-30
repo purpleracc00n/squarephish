@@ -75,7 +75,7 @@ class LoggingLevels:
     INFO     = f"{bcolors.OKGREEN}%s{bcolors.ENDC}" % "info"
 
 
-def init_logger(debug: bool):
+def init_logger(debug: bool, log_file="squarephish_log.txt"):
     """Initialize program logging
 
     :param debug: debug enabled/disabled
@@ -86,8 +86,14 @@ def init_logger(debug: bool):
     else:
         logging_level = logging.INFO
         logging_format = "[%(asctime)s] [%(levelname)-5s] %(message)s"
-
+    
     logging.basicConfig(format=logging_format, level=logging_level)
+
+    # Add a file handler for writing logs to a file
+    file_handler = logging.FileHandler(log_file)
+    file_handler.setLevel(logging_level)
+    file_handler.setFormatter(logging.Formatter(logging_format))
+    logging.getLogger().addHandler(file_handler)
 
     # Handle color output
     logging.addLevelName(logging.CRITICAL, LoggingLevels.CRITICAL)
@@ -95,3 +101,5 @@ def init_logger(debug: bool):
     logging.addLevelName(logging.DEBUG, LoggingLevels.DEBUG)
     logging.addLevelName(logging.ERROR, LoggingLevels.ERROR)
     logging.addLevelName(logging.INFO, LoggingLevels.INFO)
+
+
