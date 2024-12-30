@@ -61,6 +61,12 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="enable server debugging",
     )
+    parent_parser.add_argument(
+        "--log-file",
+        action="store_true",
+        default="squarephish_log.txt",
+        help="store logs in a custom file (default: squarephish_log.txt)",
+    )
 
     # Create a subparser to handle 'email' and 'server' modules
     subparsers = parser.add_subparsers(
@@ -85,7 +91,7 @@ def parse_args() -> argparse.Namespace:
 
     email_parser.add_argument(
         "-f",
-        "--emailsfile",
+        "--emails-file",
         type=str,
         help="file containing victim email addresses to send initial QR code email to",
     )
@@ -128,8 +134,8 @@ def parse_args() -> argparse.Namespace:
             email_parser.print_help()
             sys.exit(1)
 
-        if not args.email and not args.emailsfile:
-            parser.error("the following arguments are required: -e/--email or -f/--emailsfile")
+        if not args.email and not args.emails_file:
+            parser.error("the following arguments are required: -e/--email or -f/--emails-file")
             sys.exit(1)
 
     if args.module == "server":
@@ -240,7 +246,7 @@ if __name__ == "__main__":
     args = parse_args()
 
     # Initialize logging level and format
-    utils.init_logger(args.debug)
+    utils.init_logger(args.debug,args.log_file)
 
     # Parse config file
     config = parse_config(config_file=args.config, module=args.module)
@@ -249,8 +255,8 @@ if __name__ == "__main__":
     emailer = Emailer(config=config)
 
     if args.module == "email":
-        if args.emailsfile != None:
-            with open(args.emailsfile,"r") as f:
+        if args.emails_file != None:
+            with open(args.emails_file,"r") as f:
                 for e in f:
                     emailed = QRCodeEmail.send_qrcode(
                         email=e.rstrip(),
