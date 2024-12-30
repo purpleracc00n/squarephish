@@ -17,18 +17,18 @@ def GetIPInfoData(ip_address, api_token):
   except requests.exceptions.RequestException as e:
     return {"error": str(e)}
 
-def notify_slack(webhook,event,email,IP=None,useragent=None):
-  IPInfoData = GetIPInfoData(IP,)
+def notify_slack(webhook,ipinfo_key,event,email,IP=None,useragent=None):
+  IPInfoData = GetIPInfoData(IP,ipinfo_key)
   if event=="Email Opened":
-    notify_opened(webhook,mask_email(email),IP,useragent)
+    notify_opened(webhook,mask_email(email),IP,useragent,IPInfoData)
   elif event=="QR Accessed / Clicked Link":
-    notify_clicked(webhook,mask_email(email),IP,useragent)
+    notify_clicked(webhook,mask_email(email),IP,useragent,IPInfoData)
   elif event=="Authentication Complete":
     notify_authenticated(webhook,mask_email(email))
   else:
     logging.error("Unknown status to notify: " + event)
 
-def notify_opened(webhook,email,IP,useragent):
+def notify_opened(webhook,email,IP,useragent,IPInfoData):
   slack_data = {
 	"attachments": [
 		{
@@ -45,11 +45,11 @@ def notify_opened(webhook,email,IP,useragent):
 				},
 				{
 					"title": "COUNTRY",
-					"value": f"COUNTRY"
+					"value": f"{IPInfoData['Country']}"
 				},
 				{
 					"title": "ISP",
-					"value": f"ISP"
+					"value": f"{IPInfoData['ISP']}"
 				},
 				{
 					"title": "User Agent String",
@@ -64,7 +64,7 @@ def notify_opened(webhook,email,IP,useragent):
 	]
   }
   requests.post(webhook, json=slack_data)
-def notify_clicked(webhook,email,IP,useragent):
+def notify_clicked(webhook,email,IP,useragent,IPInfoData):
   slack_data = {
 	"attachments": [
 		{
@@ -81,11 +81,11 @@ def notify_clicked(webhook,email,IP,useragent):
 				},
 				{
 					"title": "COUNTRY",
-					"value": f"COUNTRY"
+					"value": f"{IPInfoData['Country']}"
 				},
 				{
 					"title": "ISP",
-					"value": f"ISP"
+					"value": f"{IPInfoData['ISP']}"
 				},
 				{
 					"title": "User Agent String",
