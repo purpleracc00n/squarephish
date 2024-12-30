@@ -37,7 +37,7 @@ def getUserAgentDetails(user_agent):
   except Exception as e:
     return {"error": str(e)}
 
-def notify_slack(webhook,ipinfo_key=None,event,email,IP=None,useragent=None):
+def notify_slack(webhook,event,email,IP=None,useragent=None,ipinfo_key=None):
   IPInfoData = getIPInfoData(IP,ipinfo_key)
   UserAgentDetails = getUserAgentDetails(useragent)
   if event=="Email Opened":
