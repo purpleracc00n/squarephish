@@ -91,6 +91,14 @@ def parse_args() -> argparse.Namespace:
     )
 
     email_parser.add_argument(
+        "-d",
+        "--delay",
+        type=int,
+        default=0,
+        help="delay between emails send, in seconds",
+    )
+
+    email_parser.add_argument(
         "-u",
         "--url",
         type=str,
