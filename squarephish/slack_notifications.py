@@ -65,7 +65,7 @@ def notify_opened(webhook,email,IP,useragent,IPInfoData,UserAgentDetails):
 					"value": f"<https://whatismyipaddress.com/ip/{IP}|{IP}>"
 				},
 				{
-					"title": "COUNTRY",
+					"title": "Country",
 					"value": f"{IPInfoData['Country']}"
 				},
 				{
@@ -101,7 +101,7 @@ def notify_clicked(webhook,email,IP,useragent,IPInfoData,UserAgentDetails):
 					"value": f"<https://whatismyipaddress.com/ip/{IP}|{IP}>"
 				},
 				{
-					"title": "COUNTRY",
+					"title": "Country",
 					"value": f"{IPInfoData['Country']}"
 				},
 				{
