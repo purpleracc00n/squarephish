@@ -63,7 +63,7 @@ def parse_args() -> argparse.Namespace:
     )
     parent_parser.add_argument(
         "--log-file",
-        action="store_true",
+        type=str,
         default="squarephish_log.txt",
         help="store logs in a custom file (default: squarephish_log.txt)",
     )
