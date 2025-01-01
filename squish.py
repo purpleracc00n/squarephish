@@ -279,9 +279,11 @@ if __name__ == "__main__":
                 logging.error("Failed to send QR code to victim")
             else:
                 logging.info(f"Successfully sent email to: {args.email}")
-            if args.delay > 0:
-                logging.info(f"Waiting for {args.delay} before sending the next email...")
-                time.sleep(args.delay)
+                if args.delay > 0:
+                    logging.info(f"Waiting for {args.delay} before sending the next email...")
+                    time.sleep(args.delay)
+            
+
 
     elif args.module == "server":
         logging.info(f"Starting: {app_info}")
