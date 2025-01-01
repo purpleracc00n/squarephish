@@ -17,9 +17,9 @@
 - Added option for delay between emails sent
 
 ## ToDOs
-- Change templates 
 - Improve error handling
 - Encrypt token
+- Make sure Code emails are not sent again within a timespan of 15 minutes if the link is accessed again (happens when the links are scanned by automated email security tools)
 
 ## Other useful Microsoft Applications apart from Authenticator:
 - Microsoft Authentication Broker (29d9ed98-a469-4536-ade2-f981bc1d605e)
