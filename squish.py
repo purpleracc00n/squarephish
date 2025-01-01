@@ -19,6 +19,7 @@ import sys
 import urllib3
 import logging
 import argparse
+import time
 from pathlib import Path
 from configparser import NoOptionError
 from configparser import DuplicateOptionError
