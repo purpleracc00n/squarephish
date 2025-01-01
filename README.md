@@ -11,7 +11,10 @@
 	- Email Opened
 	- QR Accessed / Clicked Link
 	- Authentication Complete (when a token is saved to disk)
-- Added Slack events update integration (similar to what Gophish has)
+- Added Slack events update integration (similar to what Gophish has). Also added more details (Country, ISP) by looking up the IP and by using a user agent parser. 
+- Added more pretexts that are not signatured
+- Added option for logging into file 
+- Added option for delay between emails sent
 
 ## ToDOs
 - Change templates 
