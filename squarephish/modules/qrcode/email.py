@@ -21,7 +21,7 @@ from configparser import ConfigParser
 from email.message import EmailMessage
 from email.mime.image import MIMEImage
 from squarephish.modules.emailer import Emailer
-from squarephish.modules.server.aes128 import encrypt_aes128
+from squarephish.modules.aes128 import encrypt_aes128
 
 
 class QRCodeEmail:
