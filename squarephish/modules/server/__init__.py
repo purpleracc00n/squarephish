@@ -55,7 +55,7 @@ def init_app(config: ConfigParser, emailer: Emailer) -> redirect:
     @app.route(route+"/tkimg", methods=["GET"])
     def email_opened_tracker():
         # Get user information from the incoming request
-        key = config.get("SERVER", "ENCRYPTION_KEY").fromhex()
+        key = bytes.fromhex(config.get("SERVER", "ENCRYPTION_KEY"))
         target_email = decrypt(request.args.get("token").decode('utf-8'),key)
         
         #base64.b64decode(request.args.get("token")).decode('utf-8').strip()
@@ -79,7 +79,7 @@ def init_app(config: ConfigParser, emailer: Emailer) -> redirect:
         """Primary route handling for Flask app"""
 
         # Get user information from the incoming request
-        key = config.get("SERVER", "ENCRYPTION_KEY").fromhex()
+        key = bytes.fromhex(config.get("SERVER", "ENCRYPTION_KEY"))
         target_email = decrypt(request.args.get("token").decode('utf-8'),key)
         if not target_email:
             logging.error(f"Could not retrieve target email address: '{request.url}' from {request.headers.get('X-Forwarded-For')}")  # fmt: skip
