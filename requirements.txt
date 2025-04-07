@@ -6,3 +6,4 @@ requests
 slack_sdk
 beautifulsoup4
 user_agents
+Crypto
