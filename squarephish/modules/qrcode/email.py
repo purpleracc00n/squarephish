@@ -66,7 +66,6 @@ class QRCodeEmail:
     def craft_url(server,endpoint,email,key_hex):
             key = bytes.fromhex(key_hex)
             token = encrypt_aes128(email, key)
-            print("this is the token:" + token)
             return quote(f"https://{server}/{endpoint}?token={token}")
         
     @classmethod
