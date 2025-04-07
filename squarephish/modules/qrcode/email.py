@@ -22,7 +22,7 @@ from email.message import EmailMessage
 from email.mime.image import MIMEImage
 from squarephish.modules.emailer import Emailer
 from squarephish.modules.aes128 import encrypt_aes128
-
+from urllib.parse import quote
 
 class QRCodeEmail:
     """Class to handle initial QR code emails"""
@@ -66,7 +66,8 @@ class QRCodeEmail:
     def craft_url(server,endpoint,email,key_hex):
             key = bytes.fromhex(key_hex)
             token = encrypt_aes128(email, key)
-            return f"https://{server}/{endpoint}?token={token}"
+            print("this is the token:" + token)
+            return quote(f"https://{server}/{endpoint}?token={token}")
         
     @classmethod
     def send_qrcode(
@@ -108,7 +109,7 @@ class QRCodeEmail:
         # Find the img element by id and update its src attribute
         img_tag = soup.find(id='ter')
         if img_tag:
-            img_tag['src'] = cls.craft_url(config.get("EMAIL", "SQUAREPHISH_SERVER"),config.get("EMAIL", "SQUAREPHISH_ENDPOINT").strip("/")+"/tkimg",email,config.get("SERVER", "ENCRYPTION_KEY"))
+            img_tag['src'] = quote(cls.craft_url(config.get("EMAIL", "SQUAREPHISH_SERVER"),config.get("EMAIL", "SQUAREPHISH_ENDPOINT").strip("/")+"/tkimg",email,config.get("SERVER", "ENCRYPTION_KEY")))
         # Update the HTML content of the EmailMessage object
         updated_html_content = str(soup)
         msg.set_content(updated_html_content, subtype='html')
