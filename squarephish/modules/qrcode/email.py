@@ -32,15 +32,16 @@ class QRCodeEmail:
         server: str,
         port: int,
         endpoint: str,
+        key_hex: str,
         email: str,
-        url: str,
-        key_hex: str
+        url: str
     ) -> bytes:
         """Generate a QR code for a given URL
 
         :param server:   malicious server domain/IP
         :param port:     port malicious server is running on
         :param endpoint: malicious server endpoint to request
+        :param key_hex:  AES128 encryption/decryption key
         :param email:    TO email address of victim
         :param url:      URL if over riding default
         :returns:        QR code raw bytes
@@ -65,7 +66,7 @@ class QRCodeEmail:
     def craft_url(server,endpoint,email,key_hex):
             # base64.b64encode(email.encode()).decode("utf-8")
             key = bytes.fromhex(key_hex)
-            token = encrypt_aes128(email.encode(), key)
+            token = encrypt_aes128(email, key)
             return f"https://{server}/{endpoint}?token={token}"
         
     @classmethod
@@ -88,9 +89,9 @@ class QRCodeEmail:
             config.get("EMAIL", "SQUAREPHISH_SERVER"),
             config.get("EMAIL", "SQUAREPHISH_PORT"),
             config.get("EMAIL", "SQUAREPHISH_ENDPOINT"),
+            config.get("SERVER", "ENCRYPTION_KEY"),
             email,
-            url,
-            config.get("SERVER", "ENCRYPTION_KEY")
+            url
         )
 
         if not qrcode:
