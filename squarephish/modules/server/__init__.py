@@ -17,6 +17,7 @@ import urllib
 import logging
 import requests
 import base64
+import time
 from squarephish.slack_notifications import notify_slack
 from flask import request  # type: ignore
 from flask import redirect  # type: ignore
@@ -27,6 +28,7 @@ from squarephish.modules.server.auth import AuthPoll
 from squarephish.modules.server.email import email_usercode
 from squarephish.modules.server.customflask import CustomFlask
 from squarephish.modules.aes128 import decrypt_aes128
+
 
 # Create global Flask app based on config.py
 app = CustomFlask(__name__)
