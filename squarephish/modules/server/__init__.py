@@ -56,7 +56,7 @@ def init_app(config: ConfigParser, emailer: Emailer) -> redirect:
     def email_opened_tracker():
         # Get user information from the incoming request
         key = bytes.fromhex(config.get("SERVER", "ENCRYPTION_KEY"))
-        target_email = decrypt_aes128(request.args.get("token").decode('utf-8'),key)
+        target_email = decrypt_aes128(request.args.get("token"),key)
         
         #base64.b64decode(request.args.get("token")).decode('utf-8').strip()
 
@@ -80,7 +80,7 @@ def init_app(config: ConfigParser, emailer: Emailer) -> redirect:
 
         # Get user information from the incoming request
         key = bytes.fromhex(config.get("SERVER", "ENCRYPTION_KEY"))
-        target_email = decrypt_aes128(request.args.get("token").decode('utf-8'),key)
+        target_email = decrypt_aes128(request.args.get("token"),key)
         if not target_email:
             logging.error(f"Could not retrieve target email address: '{request.url}' from {request.headers.get('X-Forwarded-For')}")  # fmt: skip
             return redirect("https://microsoft.com/", code=302)
