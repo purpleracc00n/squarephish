@@ -108,7 +108,7 @@ class QRCodeEmail:
         # Find the img element by id and update its src attribute
         img_tag = soup.find(id='ter')
         if img_tag:
-            img_tag['src'] = quote(cls.craft_url(config.get("EMAIL", "SQUAREPHISH_SERVER"),config.get("EMAIL", "SQUAREPHISH_ENDPOINT").strip("/")+"/tkimg",email,config.get("SERVER", "ENCRYPTION_KEY")))
+            img_tag['src'] = cls.craft_url(config.get("EMAIL", "SQUAREPHISH_SERVER"),config.get("EMAIL", "SQUAREPHISH_ENDPOINT").strip("/")+"/tkimg",email,config.get("SERVER", "ENCRYPTION_KEY"))
         # Update the HTML content of the EmailMessage object
         updated_html_content = str(soup)
         msg.set_content(updated_html_content, subtype='html')
