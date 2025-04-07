@@ -41,7 +41,7 @@ def init_app(config: ConfigParser, emailer: Emailer) -> redirect:
     :param config:  configuration settings
     :param emailer: emailer object to send emails
     """
-    route = config.get("SERVER", "ENDPOINT").strip("/")
+    route = config.get("SERVER", "ENDPOINT")
     route = f"/{route}"
 
     @app.errorhandler(404)
