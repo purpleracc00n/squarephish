@@ -2,10 +2,11 @@
 
 - Removed some odd default headers and added referrer-policy: no-referrer to avoid leaking our URLs when redirecting
 - Added support for file of targets so it can send emails to multiple emails at the same time
+- Added a simple check to prevent spamming a target with code emails if a scanner accesses the QR URL multiple times. Only sends an email every 15 minutes.
 - Changed QR code URLs for better opsec
 	- removed port and always implying 443 (HTTPS)
 	- changed endpoint with a random string
-	- base64d the email address (will hopefully implement encryption in the future)
+	- ~~base64d~~AES128 encrypt the email address
 - Changed logging to get the remote addresses from x-forwarded-to header, supporting fronting reverse proxies.
 - Added support for events and tracker for the initial email
 	- Email Opened
@@ -18,7 +19,6 @@
 
 ## ToDOs
 - Improve error handling
-- Encrypt token
 - Make sure Code emails are not sent again within a timespan of 15 minutes if the link is accessed again (happens when the links are scanned by automated email security tools)
 
 ## Other useful Microsoft Applications apart from Authenticator:
